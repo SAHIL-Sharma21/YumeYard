@@ -1,0 +1,20 @@
+#running postgresql servic here 
+
+version: '3.9'
+
+services:
+  DB:
+    container_name: Database
+    image: postgres:12
+    restart: always
+    environment:
+      POSTGRES_USER: sahil
+      POSTGRES_PASSWORD: sahil1122
+      POSTGRES_DB: Yume_DB
+    ports:
+      - 5432:5432
+    volumes:
+      - pg_data:/var/lib/postgresql/data 
+
+volumes:
+  pg_data: {}
