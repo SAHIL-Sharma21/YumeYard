@@ -3,6 +3,20 @@
 version: '3.9'
 
 services:
+
+  Backend: 
+    container_name: Backend
+    image: mybackend
+    build: 
+      context: ./Backend
+      dockerfile: Dockerfile 
+    ports:
+      - 4000:4000
+    environment:
+      - DATABASE_URL=postgresql://sahil:sahil1122@DB:5432/Yume_DB
+    env_file:
+      - ./Backend/.env
+
   DB:
     container_name: Database
     image: postgres:12
