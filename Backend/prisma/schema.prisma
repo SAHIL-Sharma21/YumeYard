@@ -22,7 +22,7 @@ model User {
   avatar       String?
   username     String    @unique
   password     String
-  refreshToken String
+  refreshToken String?
   Post         Post[] //one to many relation as user can have multiple post
   comment      Comment[] // one to many relation as user can add multiple comment
   createdAt    DateTime  @default(now())

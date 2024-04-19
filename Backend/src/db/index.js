@@ -12,8 +12,8 @@ const prisma = new PrismaClient({
 //making async function to conect to db
 const connectDB = async () => {
     try {
-        const connectionInstance = await prisma.$connect();
-        console.log(`\n Postgresql connected! DB Host: ${connectionInstance}`);
+        await prisma.$connect();
+        console.log(`\n Postgresql connected! DB Host.`);
     } catch (error) {
         console.log('Postgresql connection failed:', error);
         process.exit(1);
