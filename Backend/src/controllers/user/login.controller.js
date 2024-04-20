@@ -31,7 +31,6 @@ const userLogin = requestHandler(async (req, res) => {
 
     );
 
-    console.log(existedUser);
     //if user is not in our service then we send him to register first.
     if (!existedUser) {
         throw new ApiError(401, "Please register first and then login");
@@ -105,7 +104,7 @@ const userLogin = requestHandler(async (req, res) => {
             {
                 user: {
                     accessToken,
-                    updatedUser,
+                    user: updatedUser,
                     refreshToken
                 }
             },
@@ -114,4 +113,71 @@ const userLogin = requestHandler(async (req, res) => {
 });
 
 
-export { userLogin };
+const logoutUser = requestHandler(async (req, res) => {
+    //find the user with user id we get user from req.user 
+
+    const userId = req.user?.id;
+    // console.log(userId);
+
+    //fnd the user by his id and we will unset the refreshtoken filed in the db and then clear the cookies.
+    const logoutUser = await prisma.user.update({
+        where: {
+            id: userId,
+        },
+        data: {
+            refreshToken: null
+        }
+    });
+
+    if (!logoutUser) {
+        throw new ApiError(500, "Error while logging out the user.");
+    }
+
+    //make the cookie clear
+    const options = {
+        httpOnly: true,
+        secure: true
+    }
+
+    return res
+        .status(200)
+        .clearCookie("accessToken", options)
+        .clearCookie("refreshToken", options)
+        .json(new ApiResponse(200, {}, "User logged out succesfully!"))
+});
+
+//get currentuser
+const getCurrentUser = requestHandler(async (req, res) => {
+    //get route to get the current logged in user.
+    const userId = req.user?.id;
+
+    if (!userId) {
+        throw new ApiError(401, "Unaouthrized user.");
+    }
+
+    //getting the current user
+    const currentUser = await prisma.user.findUnique({
+        where: {
+            id: userId,
+        },
+        select: {
+            id: true,
+            email: true,
+            name: true,
+            avatar: true,
+            username: true,
+            createdAt: true,
+            updatedAt: true
+        }
+    });
+
+    if (!currentUser) {
+        throw new ApiError(500, "Error while getting current user!");
+    }
+
+    return res
+        .status(200)
+        .json(new ApiResponse(200, currentUser, "Current user fetched successfully!"));
+});
+
+export { userLogin, logoutUser, getCurrentUser };
