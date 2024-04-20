@@ -2,11 +2,11 @@
 
 import { PrismaClient } from '@prisma/client'
 const prisma = new PrismaClient();
-import { requestHandler } from '../utils/requestHandler.js'
-import { ApiError } from '../utils/ApiError.js'
-import { ApiResponse } from '../utils/ApiResponse.js'
-import { cloudinaryLink } from '../utils/uploadOnCloudinary.js'
-import { hashPassword } from '../utils/hashPassword.js'
+import { requestHandler } from '../../utils/requestHandler.js'
+import { ApiError } from '../../utils/ApiError.js'
+import { ApiResponse } from '../../utils/ApiResponse.js'
+import { cloudinaryLink } from '../../utils/uploadOnCloudinary.js'
+import { hashPassword } from '../../utils/hashPassword.js'
 
 
 //making controller for register a user or create a user
@@ -50,7 +50,7 @@ const registerUser = requestHandler(async (req, res) => {
             email,
             name,
             avatar: uploadMsg?.url,
-            username,
+            username: username?.toLowerCase(),
             password: hashedPassword,
         },
         select: {

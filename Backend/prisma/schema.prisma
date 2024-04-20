@@ -16,7 +16,7 @@ datasource db {
 //making model here for our app
 
 model User {
-  id           Int       @id @default(autoincrement())
+  id           String    @id @default(uuid())
   email        String    @unique
   name         String
   avatar       String?
@@ -31,13 +31,13 @@ model User {
 
 //Post model
 model Post {
-  postId      Int       @id @default(autoincrement())
+  postId      String    @id @default(uuid())
   title       String
   description String
   postImage   String?
   published   Boolean   @default(false)
   author      User      @relation(fields: [authorId], references: [id]) //making refrence with our User model
-  authorId    Int
+  authorId    String
   comment     Comment[] //one to many as one post can havemany comments related to it
   commentId   Int
   createdAt   DateTime  @default(now())
@@ -46,12 +46,12 @@ model Post {
 
 //Commentmodel
 model Comment {
-  commentId Int      @id @default(autoincrement())
+  commentId String   @id @default(uuid())
   content   String
   author    User     @relation(fields: [authorId], references: [id])
-  authorId  Int
+  authorId  String
   post      Post     @relation(fields: [postId], references: [postId])
-  postId    Int
+  postId    String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
