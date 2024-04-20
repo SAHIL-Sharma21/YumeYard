@@ -5,8 +5,9 @@ const userRouter = Router();
 
 // userRouter.route("/").get();
 import { registerUser } from '../controllers/user/user.controller.js'
+import { userLogin } from "../controllers/user/login.controller.js"
 userRouter.route("/register").post(upload.single("avatar"), registerUser); //route to register a user
-
+userRouter.route("/login").post(userLogin);
 
 
 export default userRouter;
