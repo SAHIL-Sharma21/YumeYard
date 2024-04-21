@@ -91,19 +91,27 @@ const getSinglePost = requestHandler(async (req, res) => {
 const getAllPosts = requestHandler(async (req, res) => {
     //find the user for authorization
     //taing page number and page size to skip the paghes and showing min numbers ofv record
+    const { pageNumber = 1, pageSize = 10 } = req.params;
 
     const userId = req.user?.id;
 
     if (!userId) {
         throw new ApiError(401, "You are not authorized!");
     }
+
+    //converting to number as it can come in strings also
+    const pageNum = parseInt(pageNumber);
+    const pageSi = parseInt(pageSize);
+
     //findind the posts which are published
     //todo implement skip and page limit functionality
     const allPosts = await prisma.post.findMany(
         {
             where: {
                 published: true
-            }
+            },
+            take: pageSi, // will give value till 10 post per page
+            // skip: (pageNum - 1) * pageSi,
         }
     );
 
