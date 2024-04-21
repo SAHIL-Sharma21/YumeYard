@@ -7,6 +7,8 @@ import { requestHandler } from "../../utils/requestHandler.js"
 import { cloudinaryLink } from "../../utils/uploadOnCloudinary.js"
 import bcrypt from "bcrypt";
 import { hashPassword } from "../../utils/hashPassword.js"
+import jwt from "jsonwebtoken"
+import { generateAccessToken, generateRefreshToken } from "../../utils/generateAccess&RefreshToken.js";
 
 
 
@@ -186,4 +188,81 @@ const changeUserPassword = requestHandler(async (req, res) => {
 });
 
 
-export { updateProfile, updateAvatar, changeUserPassword };
+//refresh accessToken
+const refreshAccessToken = requestHandler(async (req, res) => {
+
+    //incomming token from request cookie or body
+    const incomingrefreshToken = req.cookies.refreshToken || req.body.refresdToken;
+
+    if (!incomingrefreshToken) {
+        throw new ApiError(401, "Unaouthorized request.");
+    }
+
+    try {
+        //if token is comming then we fill decode the token
+        const decodedToken = jwt.decode(incomingrefreshToken, process.env.REFRESH_TOKEN_SECRET);
+
+        if (!decodedToken) {
+            throw new ApiError(500, "Error while decoding the refresh token");
+        }
+
+        //finding the user from that access token
+        const user = await prisma.user.findUnique(
+            {
+                where: {
+                    id: decodedToken,
+                }
+            }
+        );
+
+        //if we get the user then check the imcomming refreh token with user refreh token
+        if (incomingrefreshToken !== user?.refreshToken) {
+            throw new ApiError(401, "Refresh Token is expired or used.")
+        }
+
+        //if everthing is correct then we will generate new token
+        const options = {
+            httpOnly: true,
+            secure: true
+        }
+
+        const userData = {
+            userId: user.id,
+            userEmail: user.email,
+            username: user.username,
+        }
+        const accessToken = generateAccessToken(userData);
+        const newRefreshToken = generateRefreshToken(userData.userId);
+
+        //saving new refrehtoken in db
+        const newRefreshTokenSaved = await prisma.user.update(
+            {
+                where: {
+                    id: user?.id
+                },
+                data: {
+                    refreshToken: newRefreshToken,
+                }
+            }
+        );
+
+        if (!newRefreshTokenSaved) {
+            throw new ApiError(500, "Error while saving new refresh token to Database.")
+        }
+
+        return res
+            .status(200)
+            .cookie("accessToken", accessToken, options)
+            .cookie("refreshToken", newRefreshToken, options)
+            .json(new ApiResponse(200, {
+                accessToken, refreshToken: newRefreshToken
+            }, "Accees Token refreshed."))
+
+    } catch (error) {
+        throw new ApiError(401, error?.message || "Invalid refresh token.")
+    }
+});
+
+
+
+export { updateProfile, updateAvatar, changeUserPassword, refreshAccessToken };

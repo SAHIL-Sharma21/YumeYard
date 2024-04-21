@@ -17,6 +17,10 @@ app.use(express.static("public"));
 import userRouter from './routes/user.routes.js';
 app.use("/api/v1/users", userRouter); //using user route as middleware.
 
+//using post router here
+import postRouter from "./routes/post.routes.js"
+app.use("/api/v1/posts", postRouter);
+
 
 app.get("/", (req, res) => {
     res.status(200).json({ message: "This is YumeYard home route." });
