@@ -37,6 +37,17 @@ const getUserPost = requestHandler(async (req, res) => {
         }
     );
 
+    //by using aggregation or group by
+    // const postCount = await prisma.post.groupBy(
+    //     {
+    //         by: ['authorId'],
+    //         _count: {
+    //             postId: true
+    //         }
+    //     }
+    // );
+    // console.log(postCount);
+
     //total count of the users posts
     const totalPosts = userPost.length;
 

@@ -39,9 +39,10 @@ model Post {
   author      User      @relation(fields: [authorId], references: [id]) //making refrence with our User model
   authorId    String
   comment     Comment[] //one to many as one post can havemany comments related to it
-  commentId   Int
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
+
+  //can also make unique field for title and description to avlid duplicate post
 }
 
 //Commentmodel
