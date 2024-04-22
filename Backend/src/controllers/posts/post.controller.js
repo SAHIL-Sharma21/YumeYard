@@ -74,7 +74,7 @@ const getSinglePost = requestHandler(async (req, res) => {
             where: {
                 postId,
                 authorId: userId,
-            }
+            },
         }
     );
 
@@ -91,7 +91,7 @@ const getSinglePost = requestHandler(async (req, res) => {
 const getAllPosts = requestHandler(async (req, res) => {
     //find the user for authorization
     //taing page number and page size to skip the paghes and showing min numbers ofv record
-    const { pageNumber = 1, pageSize = 10 } = req.params;
+    const { pageNumber = 1, pageSize = 10 } = req.query; //my mistake have to take from query.
 
     const userId = req.user?.id;
 
@@ -131,4 +131,42 @@ const getAllPosts = requestHandler(async (req, res) => {
         .json(new ApiResponse(200, allPosts, "All post are fetched!"));
 });
 
-export { createPost, getSinglePost, getAllPosts };
+
+const togglePost = requestHandler(async (req, res) => {
+    const { postId } = req.params;
+
+    //getting the user
+    const userId = req.user?.id;
+
+    //finding the post by the post id
+    const gettingPost = await prisma.post.findUnique(
+        {
+            where: {
+                postId,
+                authorId: userId,
+            }
+        }
+    );
+
+    //toggline the publisheed status
+    const toggleStatus = await prisma.post.update({
+        where: {
+            postId,
+            authorId: userId,
+        },
+        data: {
+            published: !gettingPost?.published,
+        }
+    });
+
+    if (!toggleStatus) {
+        throw new ApiError(500, "Error while toggling status.");
+    }
+
+    return res
+        .status(200)
+        .json(new ApiResponse(200, toggleStatus, "Toggling the publish field successfull."))
+
+});
+
+export { createPost, getSinglePost, getAllPosts, togglePost };
