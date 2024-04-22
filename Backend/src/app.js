@@ -21,6 +21,10 @@ app.use("/api/v1/users", userRouter); //using user route as middleware.
 import postRouter from "./routes/post.routes.js"
 app.use("/api/v1/posts", postRouter);
 
+//comment router
+import commentRouter from './routes/comment.routes.js'
+app.use("/api/v1/comments", commentRouter);
+
 
 app.get("/", (req, res) => {
     res.status(200).json({ message: "This is YumeYard home route." });
