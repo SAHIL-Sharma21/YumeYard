@@ -139,15 +139,15 @@ const updatePostImage = requestHandler(async (req, res) => {
     //check for the file which was uploaded by multer middleware
     const imageLoaclpath = req.file?.path;
 
-    //upload on cloudinary
-    const updatePostImage = await cloudinaryLink(imageLoaclpath);
-
-    if (!updatePostImage) {
-        throw new ApiError(500, "Image Path does not found.");
-    }
-
     //now we will update the database
     try {
+
+        //upload on cloudinary
+        const updatePostImage = await cloudinaryLink(imageLoaclpath);
+
+        if (!updatePostImage) {
+            throw new ApiError(500, "Image Path does not found.");
+        }
         const updatedPostImage = await prisma.post.update(
             {
                 where: {

@@ -15,62 +15,75 @@ const getUserPost = requestHandler(async (req, res) => {
     }
 
     //finding the user feom the user id
-    const userData = await prisma.user.findUnique(
-        {
-            where: {
-                id: userId,
-            },
-            select: {
-                id: true,
-                name: true,
-                username: true,
-                email: true
+    try {
+        const userData = await prisma.user.findUnique(
+            {
+                where: {
+                    id: userId,
+                },
+                select: {
+                    id: true,
+                    name: true,
+                    username: true,
+                    email: true
+                }
             }
+        );
+        const userPost = await prisma.post.findMany(
+            {
+                where: {
+                    authorId: userId,
+                },
+                select: {
+                    postId: true,
+                    title: true,
+                    description: true,
+                    postImage: true,
+                    createdAt: true,
+                    updatedAt: true,
+                    published: true
+                }
+                //in future we have write include for the specific field to send as a response.
+            }
+        );
+
+        //by using aggregation or group by
+        // const postCount = await prisma.post.groupBy(
+        //     {
+        //         by: ['authorId'],
+        //         _count: {
+        //             postId: true
+        //         }
+        //     }
+        // );
+        // console.log(postCount);
+
+        //total count of the users posts
+        const totalPosts = userPost.length;
+
+        //spreading the userData obj and writing 2 properties for total count andpost
+        const userPosts = {
+            ...userData,
+            totalPosts,
+            posts: userPost,
         }
-    );
-    const userPost = await prisma.post.findMany(
-        {
-            where: {
-                authorId: userId,
-            },
-            //in future we have write include for the specific field to send as a response.
+
+        if (!userPosts) {
+            throw new ApiError(500, "Error while getting user posts");
         }
-    );
 
-    //by using aggregation or group by
-    // const postCount = await prisma.post.groupBy(
-    //     {
-    //         by: ['authorId'],
-    //         _count: {
-    //             postId: true
-    //         }
-    //     }
-    // );
-    // console.log(postCount);
-
-    //total count of the users posts
-    const totalPosts = userPost.length;
-
-    //spreading the userData obj and writing 2 properties for total count andpost
-    const userPosts = {
-        ...userData,
-        posts: userPost,
-        totalPosts
-    }
-
-    if (!userPosts) {
-        throw new ApiError(500, "Error while getting user posts");
-    }
-
-    //if post length is zero then user has zero post 
-    if (userPosts?.posts?.length === 0) {
-        return res
-            .status(200)
-            .json(new ApiResponse(200, userPosts, "User Did not upload any posts yet."))
-    } else {
-        return res
-            .status(200)
-            .json(new ApiResponse(200, userPosts, "Users all post fetched."))
+        //if post length is zero then user has zero post 
+        if (userPosts?.posts?.length === 0) {
+            return res
+                .status(200)
+                .json(new ApiResponse(200, userPosts, "User Did not upload any posts yet."))
+        } else {
+            return res
+                .status(200)
+                .json(new ApiResponse(200, userPosts, "Users all post fetched."))
+        }
+    } catch (error) {
+        throw new ApiError(500, "Error while getting user all posts.")
     }
 });
 
@@ -86,48 +99,51 @@ const getUserComment = requestHandler(async (req, res) => {
 
 
     //find the user and its relared post
-    const user = await prisma.user.findUnique({
-        where: {
-            id: userId
-        },
-        select: {
-            id: true,
-            email: true,
-            name: true,
-            username: true
-        }
-    });
-
-    const comment = await prisma.comment.findMany(
-        {
+    try {
+        const user = await prisma.user.findUnique({
             where: {
-                authorId: userId
+                id: userId
             },
-            //in future we have write include for the specific field to send as a response.
+            select: {
+                id: true,
+                email: true,
+                name: true,
+                username: true
+            }
+        });
+
+        const comment = await prisma.comment.findMany(
+            {
+                where: {
+                    authorId: userId
+                },
+            }
+        );
+
+        //findingcomment count
+        const totalComents = comment.length;
+
+        const userAllComents = {
+            ...user,
+            totalComents,
+            comment,
         }
-    );
 
-    //findingcomment count
-    const totalComents = comment.length;
+        if (!userAllComents) {
+            throw new ApiError(500, "Error while fetching all comments");
+        }
 
-    const userAllComents = {
-        ...user,
-        comment,
-        totalComents
-    }
-
-    if (!userAllComents) {
-        throw new ApiError(500, "Error while fetching all comments");
-    }
-
-    if (userAllComents.comment.length === 0) {
-        return res
-            .status(200)
-            .json(new ApiResponse(200, userAllComents, "User did not comment on any posts."));
-    } else {
-        return res
-            .status(200)
-            .json(new ApiResponse(200, userAllComents, "Fetched all user comments successfully"));
+        if (userAllComents.comment.length === 0) {
+            return res
+                .status(200)
+                .json(new ApiResponse(200, userAllComents, "User did not comment on any posts."));
+        } else {
+            return res
+                .status(200)
+                .json(new ApiResponse(200, userAllComents, "Fetched all user comments successfully"));
+        }
+    } catch (error) {
+        throw new ApiError(500, error?.message || "Error while getting users comments.")
     }
 });
 
