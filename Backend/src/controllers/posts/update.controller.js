@@ -40,25 +40,29 @@ const updatePost = requestHandler(async (req, res) => {
     }
 
     //if every check is done the the user can update the post
-    const updatedPost = await prisma.post.update({
-        where: {
-            postId,
-            authorId: userId,
-        },
-        data: {
-            title: title,
-            description: description,
+    try {
+        const updatedPost = await prisma.post.update({
+            where: {
+                postId,
+                authorId: userId,
+            },
+            data: {
+                title: title,
+                description: description,
+            }
+        });
+
+        if (!updatedPost) {
+            throw new ApiError(500, "Error while updating the post!");
         }
-    });
 
-    if (!updatedPost) {
-        throw new ApiError(500, "Error while updating the post!");
+        //return the response
+        return res
+            .status(200)
+            .json(new ApiResponse(200, updatedPost, "Post updated successfully."));
+    } catch (error) {
+        throw new ApiError(500, error?.message || "Error while updating post or you can not the owner of the post.")
     }
-
-    //return the response
-    return res
-        .status(200)
-        .json(new ApiResponse(200, updatedPost, "Post updated successfully."));
 });
 
 //delete the post by postId only the right owner can delete the post
@@ -90,25 +94,29 @@ const deletePost = requestHandler(async (req, res) => {
     }
 
     //every check is done then delete the post
-    const deletedPost = await prisma.post.delete(
-        {
-            where: {
-                postId,
-                authorId: userId,
+    try {
+        const deletedPost = await prisma.post.delete(
+            {
+                where: {
+                    postId,
+                    authorId: userId,
+                }
             }
+        );
+
+        // console.log(deletedPost);
+
+        if (!deletedPost) {
+            throw new ApiError(500, "Error while deleting the post!");
         }
-    );
 
-    // console.log(deletedPost);
-
-    if (!deletedPost) {
-        throw new ApiError(500, "Error while deleting the post!");
+        //return the response,
+        return res
+            .status(200)
+            .json(new ApiResponse(200, {}, "Post deleted successfully!"));
+    } catch (error) {
+        throw new ApiError(500, error?.message || "Error while deleting the post or you are not the owner of the post.")
     }
-
-    //return the response,
-    return res
-        .status(200)
-        .json(new ApiResponse(200, {}, "Post deleted successfully!"));
 });
 
 
@@ -139,26 +147,30 @@ const updatePostImage = requestHandler(async (req, res) => {
     }
 
     //now we will update the database
-    const updatedPostImage = await prisma.post.update(
-        {
-            where: {
-                postId,
-                authorId: userId
-            },
-            data: {
-                postImage: updatePostImage?.url,
+    try {
+        const updatedPostImage = await prisma.post.update(
+            {
+                where: {
+                    postId,
+                    authorId: userId
+                },
+                data: {
+                    postImage: updatePostImage?.url,
+                }
             }
+        );
+
+        if (!updatedPostImage) {
+            throw new ApiError(500, "Error while updating image.");
         }
-    );
 
-    if (!updatedPostImage) {
-        throw new ApiError(500, "Error while updating image.");
+        //return the response to user
+        return res
+            .status(200)
+            .json(new ApiResponse(200, updatedPostImage, "Post Image updated Successfully."));
+    } catch (error) {
+        throw new ApiError(500, error?.message || "Error while updating image or you are not the correct owner.");
     }
-
-    //return the response to user
-    return res
-        .status(200)
-        .json(new ApiResponse(200, updatedPostImage, "Post Image updated Successfully."));
 });
 
 //delete the post Image if user want to delete
@@ -178,26 +190,30 @@ const deletPostImage = requestHandler(async (req, res) => {
     }
 
     //now will delete the post image by finding post
-    const deletedImage = await prisma.post.update(
-        {
-            where: {
-                postId,
-                authorId: userId
-            },
-            data: {
-                postImage: null
+    try {
+        const deletedImage = await prisma.post.update(
+            {
+                where: {
+                    postId,
+                    authorId: userId
+                },
+                data: {
+                    postImage: null
+                }
             }
+        );
+
+        if (!deletedImage) {
+            throw new ApiError(500, "Error while deleting the image.");
         }
-    );
 
-    if (!deletedImage) {
-        throw new ApiError(500, "Error while deleting the image.");
+        //retun the response
+        return res
+            .status(200)
+            .json(new ApiResponse(200, deletedImage, "Post Image removed Successfully!"));
+    } catch (error) {
+        throw new ApiError(500, error?.message || "Error while deleting the post image or you are not thr owner of the post.")
     }
-
-    //retun the response
-    return res
-        .status(200)
-        .json(new ApiResponse(200, deletedImage, "Post Image removed Successfully!"));
 });
 
 export { updatePost, deletePost, updatePostImage, deletPostImage };

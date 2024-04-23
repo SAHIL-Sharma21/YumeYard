@@ -149,24 +149,27 @@ const togglePost = requestHandler(async (req, res) => {
     );
 
     //toggline the publisheed status
-    const toggleStatus = await prisma.post.update({
-        where: {
-            postId,
-            authorId: userId,
-        },
-        data: {
-            published: !gettingPost?.published,
+    try {
+        const toggleStatus = await prisma.post.update({
+            where: {
+                postId,
+                authorId: userId,
+            },
+            data: {
+                published: !gettingPost?.published,
+            }
+        });
+
+        if (!toggleStatus) {
+            throw new ApiError(500, "Error while toggling status.");
         }
-    });
 
-    if (!toggleStatus) {
-        throw new ApiError(500, "Error while toggling status.");
+        return res
+            .status(200)
+            .json(new ApiResponse(200, toggleStatus, "Toggling the publish field successfull."))
+    } catch (error) {
+        throw new ApiError(500, error?.message || "you cannot publish the status.")
     }
-
-    return res
-        .status(200)
-        .json(new ApiResponse(200, toggleStatus, "Toggling the publish field successfull."))
-
 });
 
 export { createPost, getSinglePost, getAllPosts, togglePost };
