@@ -168,4 +168,38 @@ const getPostComments = requestHandler(async (req, res) => {
     }
 });
 
-export { addComment, getPostComments };
+//get comment by specific id
+const getComment = requestHandler(async (req, res) => {
+    //we will get the comment by comment id
+    const { commentId } = req.params;
+
+    if (!commentId) {
+        throw new ApiError(400, "Comment id is required.");
+    }
+
+    //check for the user 
+    const userId = req.user?.id;
+
+    if (!userId) {
+        throw new ApiError(401, "Unauthorized user.");
+    }
+
+    //get the comment
+    try {
+        const comment = await prisma.comment.findUnique({
+            where: {
+                commentId,
+            }
+        });
+
+        //retun the response
+        return res
+            .status(200)
+            .json(new ApiResponse(200, comment, "Comment fetched successfully!"));
+    } catch (error) {
+        throw new ApiError(500, error?.message || "Error while getting the comment!");
+    }
+});
+
+
+export { addComment, getPostComments, getComment };

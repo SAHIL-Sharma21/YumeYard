@@ -8,14 +8,15 @@ const commentRouter = Router();
 commentRouter.use(verifyToken);
 
 //adding comment to post by taking post id
-import { addComment, getPostComments } from '../controllers/comments/create.controller.js'
+import { addComment, getPostComments, getComment } from '../controllers/comments/create.controller.js'
 commentRouter.route("/add-comment/:postId").post(addComment);
 commentRouter.route("/get-PostComment/:postId").get(getPostComments);
+commentRouter.route("/get-comment/:commentId").get(getComment);
 
 //updating and deleting
-import { updateComment } from '../controllers/comments/update.controller.js'
+import { updateComment, deleteComment } from '../controllers/comments/update.controller.js'
 commentRouter.route("/update-comment/:commentId").post(updateComment);
-commentRouter.route("/delete-comment/:commentId").delete();
+commentRouter.route("/delete-comment/:commentId").delete(deleteComment);
 
 
 export default commentRouter;
