@@ -1,5 +1,6 @@
+import Login from "./components/Login"
 import Navbar from "./components/Navbar"
-import { Button } from "./components/ui/button"
+import Register from "./components/Register"
 
 
 function App() {
@@ -7,11 +8,10 @@ function App() {
 
   return (
     <>
-    <h1>hello this is front end apllication</h1>
-      <Button variant="destructive"> hello shadcn ui </Button>
-
-      
       <Navbar />
+      {/* we can use outlet here.  */}
+      <Register />
+      <Login />
     </>
   )
 }
