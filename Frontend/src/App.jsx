@@ -1,17 +1,28 @@
+
+// import useAuth from "./utlis/useAuth"
+import {AuthProvider} from './contexts/AuthContext'
+import {BrowserRouter, Route, Routes} from 'react-router-dom'
 import Login from "./components/Login"
-import Navbar from "./components/Navbar"
 import Register from "./components/Register"
+import Home from "./components/Home"
+// import Profile from './components/Profile'
+import ProtectedRoute from './router/protectedRoute'
 
-
-function App() {
+const App = () => {
 
 
   return (
     <>
-      <Navbar />
-      {/* we can use outlet here.  */}
-      <Register />
-      <Login />
+    <AuthProvider>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/login" element={<Login/>} />
+          <Route path="/register" element={<Register />} />
+          <Route  path='/home' element={<ProtectedRoute> <Home /> </ProtectedRoute>}/>
+        </Routes>
+      </BrowserRouter>
+    </AuthProvider>
+      
     </>
   )
 }

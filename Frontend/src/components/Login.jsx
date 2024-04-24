@@ -1,17 +1,45 @@
 //login component
 import {useForm} from 'react-hook-form'
 import {Button} from "@/components/ui/button"
+import Navbar from './Navbar';
+import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import useAuth from '../utlis/useAuth.js'
+
 
 const Login = () => {
 
     const {register, handleSubmit, formState: {errors}} = useForm();
+
+    const {login} = useAuth();
+    const navigate = useNavigate();
+
+    const handleLogin = async(data) => {
+        console.log(data);
+        const response = await axios.post('http://localhost:8080/api/v1/users/login', data, {
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+
+        const accessToken = response.data.data.user.accessToken;
+        const refreshToken = response.data.data.user.refreshToken;
+
+        login(accessToken, refreshToken);
+
+        if(accessToken) {
+            navigate("/home");
+        }
+    }
+
   return (
     <>
+    <Navbar />
         <div className='w-full h-full flex justify-center items-center'>
             {/* form div  */}
             <div>
                 <h2>Login</h2>
-                <form onSubmit={handleSubmit()}>
+                <form onSubmit={handleSubmit(handleLogin)}>
                     {/* username field  */}
                     <div>
                         <label htmlFor="email">Username</label>
@@ -32,6 +60,9 @@ const Login = () => {
                     {/* login button  */}
                     <div>
                         <Button type="submit">Login</Button>
+                    </div>
+                    <div>
+                        <p>Dont have and account?  <Link to={"/register"}>Register </Link></p>
                     </div>
                 </form>
             </div>

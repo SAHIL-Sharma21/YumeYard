@@ -5,6 +5,8 @@ import {useForm} from 'react-hook-form';
 import {Input} from '@/components/ui/input'
 import {Label} from '@/components/ui/label'
 import { Button } from './ui/button';
+import { Link } from 'react-router-dom';
+import Navbar from './Navbar';
 
 const Register = () => {
 
@@ -13,6 +15,7 @@ const Register = () => {
 
   return (
     <>
+    <Navbar />
         <div className="w-full h-full"> 
             
             <div className='flex flex-row sm:justify-center sm:items-center md:gap-x-5'>
@@ -66,7 +69,7 @@ const Register = () => {
                         {/* submit button  */}
                         <div>
                             <Button type="submit">Create Account</Button>
-                            <p>Already have an account? <Button variant="link">Login</Button> </p>
+                            <p>Already have an account? <Link to={"/login"}><Button variant="link">Login</Button></Link></p>
                         </div>
                     </form>
                 </div>
