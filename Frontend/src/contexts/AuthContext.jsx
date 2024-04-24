@@ -9,24 +9,31 @@ export const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
     const [accessToken, setAccessToken] = useState(null);
     const [refreshToken, setRefreshToken] = useState(null);
+    const [currentUser, setCurrentUser] = useState(null);
 
+    //logiing in user setting his access token.
     const login = (accessToken, refreshToken) => {
         setAccessToken(accessToken);
-        console.log(accessToken);
         setRefreshToken(refreshToken);
-        console.log(refreshToken);
-    }
 
-    const logout = () => {
-        setAccessToken(null);
-        setRefreshToken(null);
+    }
+    //logging out user 
+    const logout = (accessToken, refreshToken) => {
+        setAccessToken(accessToken);
+        setRefreshToken(refreshToken);
+    }
+    //function to get current user based on his access token or logged in user.
+    const getCurrentUser = (user) => {
+        setCurrentUser(user);
     }
 
     const authValues = {
         login,
         logout,
         accessToken,
-        refreshToken
+        refreshToken,
+        currentUser,
+        getCurrentUser
     }
 
     return (
