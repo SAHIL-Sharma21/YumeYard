@@ -73,7 +73,7 @@ const getSinglePost = requestHandler(async (req, res) => {
         {
             where: {
                 postId,
-                authorId: userId,
+                // authorId: userId, // we have to remove this as any user can see the single post ->> i got issue in frontend.
             },
         }
     );
