@@ -27,16 +27,15 @@ const SinglePost = () => {
                         Authorization: `Bearer ${accessToken}`
                       }
                 });
-                console.log(response.data);
+                setPost(response.data.data);
 
             } catch (error) {
                 console.log(`Error while fetching single post, ${error}`);
             }
         }
 
-
         fetchSinglePost();
-    });
+    }, [accessToken]);
 
   return (
     <>
@@ -50,7 +49,8 @@ const SinglePost = () => {
 
             <div className="flex flex-row justify-between md:w-[80%] mx-auto items-center">
                 <div className="w-[60%] h-[60%] mx-auto bg-white rounded-md">
-                    <h1 className="text-black text-4xl font-semibold"> single post {}</h1>
+                    <h1 className="text-black text-4xl font-semibold"> single post {post.title}</h1>
+                    {/* todo make tilte and post visible and make one component to add comment  */}
                 </div>
             </div>
             <div></div>
