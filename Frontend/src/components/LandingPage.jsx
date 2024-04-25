@@ -6,7 +6,7 @@ const LandingPage = () => {
     <>
       <div className="flex  flex-col justify-center items-center h-screen bg-gradient-to-r from-gray-800 to-gray-900 text-white gap-2">
         <div className="md:w-[30%] w-[90%]"> 
-          <img src="public\graphics\1.png" alt="landing page image" className="w-fit" />
+          <img src="/graphics/1.png" alt="landing page image" className="w-fit" />
         </div>
         <div className="flex flex-col justify-center items-center">
           <h1 className="text-4xl font-bold md:mb-2 mt-8">&quot;Dreamer&apos;s Haven: Welcome to Yume Yard&quot;</h1>

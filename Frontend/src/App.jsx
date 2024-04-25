@@ -9,6 +9,7 @@ import Home from "./components/Home"
 import ProtectedRoute from './router/protectedRoute'
 import LandingPage from './components/LandingPage'
 import Profile from './components/Profile'
+import SinglePost from './components/posts/SinglePost'
 
 
 const App = () => {
@@ -25,6 +26,7 @@ const App = () => {
           {/* protected routed  */}
           <Route  path='/home' element={<ProtectedRoute><Home /></ProtectedRoute>} />
           <Route path='home/custom-domain' element={<ProtectedRoute><Profile /></ProtectedRoute>}/>
+          <Route path='home/post/:postId' element={<ProtectedRoute><SinglePost /></ProtectedRoute>} />
         </Routes>
       </BrowserRouter>
     </AuthProvider>
