@@ -1,8 +1,13 @@
 //user profile protected route
 
+import Navbar from "./Navbar"
+
 const Profile = () => {
   return (
-    <div>This is user profile</div>
+      <>
+        <Navbar />
+        <h1>This is profile page </h1>
+      </>
     
   )
 }

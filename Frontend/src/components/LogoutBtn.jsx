@@ -1,14 +1,14 @@
 //making logging out functionality
 
 import axios from "axios"
-// import { Button } from "./ui/button"
 import useAuth from "@/utlis/useAuth"
-import {LogOut } from "lucide-react"
+import { LogOut } from "lucide-react"
 
 
 const LogoutBtn = () => {
 
-    const {accessToken, logout} = useAuth();
+    const { accessToken ,logout} = useAuth();
+
 //hanle logout functionality
 const handleLogout = async() => {
     try {
@@ -17,7 +17,6 @@ const handleLogout = async() => {
                 Authorization: `Bearer ${accessToken}`
             }
            });
-
             if(response.data?.statusCode === 200) {
                 logout(null, null);
             }

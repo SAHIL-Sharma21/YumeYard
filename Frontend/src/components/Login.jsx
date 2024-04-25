@@ -3,26 +3,27 @@ import {useForm} from 'react-hook-form'
 import {Button} from "@/components/ui/button"
 import Navbar from './Navbar';
 import { Link, useNavigate } from 'react-router-dom';
-import axios from 'axios';
+// import axios from 'axios';
 import useAuth from '../utlis/useAuth.js'
 import { useEffect } from 'react';
+import axios from 'axios';
+// import ApiService from '@/utlis/axiosInstance'; 
+
 
 
 const Login = () => {
 
-    const {register, handleSubmit, formState: {errors}} = useForm();
+    const {register, handleSubmit, formState: {errors}, reset} = useForm();
 
     const {login, getCurrentUser, accessToken} = useAuth();
     const navigate = useNavigate();
 
-    const handleLogin = async(data) => {
-        console.log(data);
-        const response = await axios.post('http://localhost:8080/api/v1/users/login', data, {
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        });
+    //  const {postData} = ApiService();
 
+    const handleLogin = async(data) => {
+        // const response = await postData("/users/login", data);
+        const response = await axios.post('http://localhost:8080/api/v1/users/login', data)
+    
         const accessToken = response.data.data.user.accessToken;
         const refreshToken = response.data.data.user.refreshToken;
         const currentUser = response.data.data?.user?.user;
@@ -30,6 +31,8 @@ const Login = () => {
         getCurrentUser(currentUser);
         login(accessToken, refreshToken);
 
+        //making input field clear
+        reset();
         // if(accessToken) {
         //     navigate("/home");
         // }
@@ -46,7 +49,7 @@ const Login = () => {
   return (
     <>
 
-    <div className='h-screen flex flex-col justify-between '> 
+    <div className='h-screen flex flex-col justify-between bg-gradient-to-r from-gray-800 to-gray-900 '> 
         <Navbar />
         <div className='w-full flex justify-center items-center  overflow-hidden'>
             {/* form div  */}

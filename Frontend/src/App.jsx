@@ -23,8 +23,7 @@ const App = () => {
           <Route path="/login" element={<Login/>} />
           <Route path="/register" element={<Register />} />
           {/* protected routed  */}
-          <Route  path='/home' element={<ProtectedRoute> <Home /> </ProtectedRoute>}>
-          </Route>
+          <Route  path='/home' element={<ProtectedRoute><Home /></ProtectedRoute>} />
           <Route path='home/custom-domain' element={<ProtectedRoute><Profile /></ProtectedRoute>}/>
         </Routes>
       </BrowserRouter>
