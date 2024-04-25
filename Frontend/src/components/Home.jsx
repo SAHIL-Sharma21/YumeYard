@@ -26,7 +26,8 @@ const Home = () => {
           Authorization: `Bearer ${accessToken}`
         }
       });
-      setAllPosts(response.data.data);
+      setAllPosts(response.data.data);// use spread operator and spread previous allposts 
+
     } catch (error) {
       console.log("Error while fetching data.", error);
     }
