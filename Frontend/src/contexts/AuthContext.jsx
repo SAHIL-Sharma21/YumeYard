@@ -33,6 +33,7 @@ export const AuthProvider = ({ children }) => {
         accessToken,
         refreshToken,
         currentUser,
+        setCurrentUser,
         getCurrentUser
     }
 
