@@ -123,7 +123,8 @@ const getPostComments = requestHandler(async (req, res) => {
                     postId,
                 },
                 include: {
-                    comment: true
+                    comment: true,
+                    author: true
                 }
             }
         );
@@ -144,9 +145,10 @@ const getPostComments = requestHandler(async (req, res) => {
             description,
             authorId,
             totalComment,
-            comments: comment.map(({ commentId, content, createdAt, updatedAt }) => ({
+            comments: comment.map(({ commentId, content, createdAt, updatedAt, authorId }) => ({
                 commentId,
                 content,
+                authorId,
                 createdAt,
                 updatedAt
             })),

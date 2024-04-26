@@ -41,7 +41,7 @@ const SinglePost = () => {
         <div className="bg-gradient-to-r from-gray-800 to-gray-900">
             <Navbar />
             <div className="md:w-[80%] mx-auto my-10">
-                <Button onClick={() => navigate("/home")} className="flex justify-start" variant="outline" size="icon">
+                <Button onClick={() => navigate("/home")} className="flex justify-center hover:bg-gray-400" variant="outline" size="icon">
                     <ChevronLeft className="h-5 w-5"/>
                 </Button>
             </div>

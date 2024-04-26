@@ -49,9 +49,7 @@ const MyProfile = () => {
                 <div className="md:w-[80%] mx-auto my-10 ">
                     <Button >Edit profile</Button>
                 </div>
-            </div>
-
-            
+            </div>    
         </>
     )
 }
