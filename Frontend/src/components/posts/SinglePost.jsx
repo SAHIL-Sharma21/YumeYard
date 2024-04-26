@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import {ChevronLeft} from 'lucide-react'
 import axios from "axios";
 import useAuth from "@/utlis/useAuth";
-import PostComments from "./Comment";
+import PostComments from "./PostComments";
 
 const SinglePost = () => {
 
