@@ -1,5 +1,3 @@
-//making comment component it will show comment for a single video
-
 import { useEffect, useState } from "react";
 import { Button } from "../ui/button";
 import useAuth from "@/utlis/useAuth";
@@ -14,6 +12,7 @@ const PostComments = ({postId}) => {
     const {accessToken, currentUser} = useAuth();
     const [comment, setComment] = useState([]);
     const [totalComment, setTotalComment] = useState(0);
+    // State to track which comment is being edited
 
     const fetchComments = async(postId) => {
         try {
@@ -22,7 +21,6 @@ const PostComments = ({postId}) => {
                     Authorization: `Bearer ${accessToken}`
                 }
             });
-            console.log(response.data.data);
             setComment(response.data.data.comments);
             setTotalComment(response.data.data.totalComment);
         } catch (error) {
@@ -38,8 +36,6 @@ const PostComments = ({postId}) => {
 
 //handle add comment
 const addComment = async(data) => {
-    console.log(data);
-
     //add post request
     const response = await axios.post(`http://localhost:8080/api/v1/comments/add-comment/${postId}`, data, {
         headers: {
@@ -69,10 +65,27 @@ const deleteComment  = async(commentId) => {
     }
 }
 
+// Updating comment logic
+// const updateComment = async(commentId, updatedData) => {
+//     try {
+//         const response = await axios.patch(`http://localhost:8080/api/v1/comments/update-comment/${commentId}`, updatedData, {
+//             headers: {
+//                 Authorization: `Bearer ${accessToken}`
+//             }
+//         });
+//         if(response.data.statusCode === 200) {
+//             fetchComments(postId);
+//             setEditingCommentId(null); // Reset editing state
+//         }
+//     } catch (error) {
+//         console.log(`Error while updating the comment, ${error}`);
+//     }
+// }
+
     return (
         <>
         <div className="flex flex-row justify-between items-end my-4 py-4">
-            <form onSubmit={handleSubmit(addComment)} className="sm:w-3/4">
+            <form onSubmit={handleSubmit(handleSubmit(addComment))} className="sm:w-3/4">
                 <input className={`mt-1 p-2 border min-w-full border-gray-800 rounded-sm  focus:border-blue-500 ${errors.email && 'border-red-500'}`} 
                 placeholder="Add Comment" type="text" name="content" {...register('content', {required: true})}
                 aria-invalid={errors.content ? "true" : "false"}
@@ -90,12 +103,18 @@ const deleteComment  = async(commentId) => {
                             <p className="ml-4 text-black text-sm"> <span className="text-white font-normal text-base">UserId</span>: {comment.authorId}</p>
                             <h1 className="text-white ml-4 text-xl font-medium ">{comment.content}</h1>
                         </div>
-                        {/* current user se uski id ko compare krr rahe hai comment ke author id se tb button show kreag wrna nhi  */}
-                        {currentUser && currentUser.id === comment.authorId && 
-                            <Button className="bg-white hover:bg-red-300" size="icon" onClick={()=>deleteComment(comment.commentId)}>
-                               <Trash2  className="text-black"/>
-                           </Button>
-                        } 
+                        <div className="gap-2 flex flex-row items-center">
+                            {/* {currentUser && currentUser.id === comment.authorId && 
+                                <Button onClick={() => setEditingCommentId(comment.commentId)}>
+                                    <Edit2 />
+                                </Button>
+                            } */}
+                            {currentUser && currentUser.id === comment.authorId && 
+                                <Button className="hover:bg-red-300" size="icon" onClick={()=>deleteComment(comment.commentId)}>
+                                    <Trash2 />
+                                </Button>
+                            } 
+                        </div>
                     </div>   
                 </div>
             ))}

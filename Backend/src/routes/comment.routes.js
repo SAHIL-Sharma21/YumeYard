@@ -15,7 +15,7 @@ commentRouter.route("/get-comment/:commentId").get(getComment);
 
 //updating and deleting
 import { updateComment, deleteComment } from '../controllers/comments/update.controller.js'
-commentRouter.route("/update-comment/:commentId").post(updateComment);
+commentRouter.route("/update-comment/:commentId").patch(updateComment);
 commentRouter.route("/delete-comment/:commentId").delete(deleteComment);
 
 

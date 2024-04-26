@@ -43,8 +43,8 @@ const Home = () => {
   return (
     <>
         <Navbar />
-        <div className="h-screen mt-5">
-          <div className="md:w-[80%] mx-auto rounded-md flex flex-col md:h-auto items-center bg-slate-500">
+        <div className=" mt-5"> 
+          <div className="md:w-[80%] mx-auto rounded-md flex flex-col md:h-auto mb-6 items-center bg-gradient-to-t  from-gray-800 to-gray-900">
             <h1 className="text-center font-bold text-3xl my-2 text-white">All Posts</h1>
             <Separator className="my-4 md:w-[80%]" />
             <div className="mx-10 grid md:grid-cols-2 grid-cols-1 lg:grid-cols-3 gap-x-4">
