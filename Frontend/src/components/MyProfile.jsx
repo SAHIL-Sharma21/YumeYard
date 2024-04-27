@@ -33,6 +33,7 @@ const MyProfile = () => {
             }
             console.log(response.data);
         } catch (error) {
+            console.log(data);
             console.log(`Error while updating post ${error}`);
         }
     }

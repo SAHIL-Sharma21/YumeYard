@@ -24,7 +24,7 @@ const Navbar = () => {
     <>
         <div className="bg-gray-700 py-4 flex sm:flex-row sm:justify-between sm:items-center">
           <div className="md:w-3/4 mx-auto flex items-center sm:justify-between">
-              <h1 className="text-white sm:font-bold sm:font-mono">YumeYard</h1>
+              <h1 className="text-white sm:font-bold sm:font-mono cursor-pointer" onClick={()=> navigate("/home")}><img src="/Yumeyard.png" className="w-12 rounded-full h-auto"/></h1>
               {/* { accessToken ? <LogoutBtn /> : null} */}
               <div className="flex flex-row justify-between gap-4">
                 {accessToken ? <Button className="bg-rose-500 flex flex-row gap-2  items-center" onClick={() => navigate("create-post")} disabled={disableBtn}>
@@ -32,8 +32,7 @@ const Navbar = () => {
                   : null}
                 {accessToken ? <UserProfile /> : null}
               </div>
-          </div>
-          
+          </div>   
         </div>
     </>
   )
