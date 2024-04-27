@@ -76,8 +76,9 @@ const MyProfile = () => {
                                 </div>
                             </div>
                             
-                <div className="md:w-[80%] mx-auto my-10 ">
+                <div className="md:w-[80%] mx-auto my-10 flex gap-2">
                     <Button onClick={() => setEditing(true)}>Edit profile</Button>
+                    <Button className="bg-rose-500" onClick={() =>navigate("all-posts")}>Get User All posts</Button>
                 </div>    
                             </>
                         ) : (

@@ -35,7 +35,7 @@ model Post {
   title       String
   description String
   postImage   String?
-  published   Boolean   @default(false)
+  published   Boolean   @default(true)
   author      User      @relation(fields: [authorId], references: [id]) //making refrence with our User model
   authorId    String
   comment     Comment[] //one to many as one post can havemany comments related to it

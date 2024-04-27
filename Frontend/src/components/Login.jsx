@@ -5,7 +5,7 @@ import Navbar from './Navbar';
 import { Link, useNavigate } from 'react-router-dom';
 // import axios from 'axios';
 import useAuth from '../utlis/useAuth.js'
-import { useEffect } from 'react';
+import { useEffect} from 'react';
 import axios from 'axios';
 // import ApiService from '@/utlis/axiosInstance'; 
 
@@ -17,6 +17,7 @@ const Login = () => {
 
     const {login, getCurrentUser, accessToken} = useAuth();
     const navigate = useNavigate();
+    // const [loginError, setLoginError] = useState(false);
 
     //  const {postData} = ApiService();
 
@@ -31,8 +32,13 @@ const Login = () => {
         getCurrentUser(currentUser);
         login(accessToken, refreshToken);
 
+        // if(response.status === 500) {
+        //     console.log("email or password may be wrong");
+        // }
         //making input field clear
         reset();
+
+
         // if(accessToken) {
         //     navigate("/home");
         // }

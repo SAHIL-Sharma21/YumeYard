@@ -29,9 +29,9 @@ const createPost = requestHandler(async (req, res) => {
     //upload on cloudinary
     const postImageUrl = await cloudinaryLink(postImageLocal);
 
-    if (!postImageUrl) {
-        throw new ApiError(400, "Post Image is required.");
-    }
+    // if (!postImageUrl) {
+    //     throw new ApiError(400, "Post Image is required.");
+    // }
 
     //now create the post
     const postCreated = await prisma.post.create(
@@ -40,7 +40,8 @@ const createPost = requestHandler(async (req, res) => {
                 title,
                 description,
                 postImage: postImageUrl?.url,
-                authorId: userId
+                authorId: userId,
+                published: true,
             }
         }
     );
