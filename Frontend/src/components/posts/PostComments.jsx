@@ -16,7 +16,7 @@ const PostComments = ({postId}) => {
 
     const fetchComments = async(postId) => {
         try {
-            const response = await axios.get(`http://localhost:8080/api/v1/comments/get-PostComment/${postId}`, {
+            const response = await axios.get(`${import.meta.env.VITE_BACKEND_API_URL}/comments/get-PostComment/${postId}`, {
                 headers: {
                     Authorization: `Bearer ${accessToken}`
                 }
@@ -28,7 +28,6 @@ const PostComments = ({postId}) => {
         }
     }
 
-    console.log(totalComment);
     //fetching all comments for this posts
     useEffect(() => {
         fetchComments(postId);
@@ -37,7 +36,7 @@ const PostComments = ({postId}) => {
 //handle add comment
 const addComment = async(data) => {
     //add post request
-    const response = await axios.post(`http://localhost:8080/api/v1/comments/add-comment/${postId}`, data, {
+    const response = await axios.post(`${import.meta.env.VITE_BACKEND_API_URL}/comments/add-comment/${postId}`, data, {
         headers: {
             Authorization: `Bearer ${accessToken}`
         }
@@ -52,7 +51,7 @@ const addComment = async(data) => {
 //deleting comment logic
 const deleteComment  = async(commentId) => {
     try {
-        const response = await axios.delete(`http://localhost:8080/api/v1/comments/delete-comment/${commentId}`, {
+        const response = await axios.delete(`${import.meta.env.VITE_BACKEND_API_URL}/comments/delete-comment/${commentId}`, {
             headers: {
                 Authorization: `Bearer ${accessToken}`
             }

@@ -21,7 +21,7 @@ const MyProfile = () => {
     //handling edit functionality
     const updateProfile = async(data) => {
         try {
-            const response = await axios.patch(`http://localhost:8080/api/v1/users/update-profile`, data, {
+            const response = await axios.patch(`${import.meta.env.VITE_BACKEND_API_URL}/users/update-profile`, data, {
                 headers: {
                     Authorization: `Bearer ${accessToken}`
                 }

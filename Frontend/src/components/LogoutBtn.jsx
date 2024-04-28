@@ -12,7 +12,7 @@ const LogoutBtn = () => {
 //hanle logout functionality
 const handleLogout = async() => {
     try {
-           const response = await axios.post('http://localhost:8080/api/v1/users/logout', null, {
+           const response = await axios.post(`${import.meta.env.VITE_BACKEND_API_URL}/users/logout`, null, {
             headers: {
                 Authorization: `Bearer ${accessToken}`
             }

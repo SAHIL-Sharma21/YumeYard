@@ -21,7 +21,7 @@ const Home = () => {
 
    const fetchAllPost = async () => {
     try {
-      const response = await axios.get('http://localhost:8080/api/v1/posts/all-posts', {
+      const response = await axios.get(`${import.meta.env.VITE_BACKEND_API_URL}/posts/all-posts`, {
         headers: {
           Authorization: `Bearer ${accessToken}`
         }
@@ -38,7 +38,6 @@ const Home = () => {
     fetchAllPost();
   }, [accessToken]);
 
-  console.log(allPosts);
 
   return (
     <>

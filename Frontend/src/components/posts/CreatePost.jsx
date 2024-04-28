@@ -21,7 +21,7 @@ const CreatePost = () => {
             console.log(data);
         try {
 
-           const response = await axios.post('http://localhost:8080/api/v1/posts/create-post', data, {
+           const response = await axios.post(`${import.meta.env.VITE_BACKEND_API_URL}/posts/create-post`, data, {
                 headers: {
                     Authorization: `Bearer ${accessToken}`
                 }

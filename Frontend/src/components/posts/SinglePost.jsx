@@ -15,13 +15,12 @@ const SinglePost = () => {
     const navigate = useNavigate();
     const [post, setPost] = useState({});
 
-    console.log(postId);
 
     //fetching sinle post by its id
     useEffect(() => {
         const fetchSinglePost = async() => {
             try {
-                const response = await axios.get(`http://localhost:8080/api/v1/posts/get-post/${postId}`, {
+                const response = await axios.get(`${import.meta.env.VITE_BACKEND_API_URL}/posts/get-post/${postId}`, {
                     headers: {
                         Authorization: `Bearer ${accessToken}`
                       }

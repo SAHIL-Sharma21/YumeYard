@@ -23,25 +23,30 @@ const Login = () => {
 
     const handleLogin = async(data) => {
         // const response = await postData("/users/login", data);
-        const response = await axios.post('http://localhost:8080/api/v1/users/login', data)
-    
-        const accessToken = response.data.data.user.accessToken;
-        const refreshToken = response.data.data.user.refreshToken;
-        const currentUser = response.data.data?.user?.user;
-     
-        getCurrentUser(currentUser);
-        login(accessToken, refreshToken);
-
-        // if(response.status === 500) {
-        //     console.log("email or password may be wrong");
-        // }
-        //making input field clear
-        reset();
-
-
-        // if(accessToken) {
-        //     navigate("/home");
-        // }
+        // const response = await axios.post('http://localhost:8080/api/v1/users/login', data)
+        try {
+                    const response = await axios.post(`${import.meta.env.VITE_BACKEND_API_URL}/users/login`, data)
+            
+                    const accessToken = response.data.data.user.accessToken;
+                    const refreshToken = response.data.data.user.refreshToken;
+                    const currentUser = response.data.data?.user?.user;
+                
+                    getCurrentUser(currentUser);
+                    login(accessToken, refreshToken);
+            
+                    // if(response.status === 500) {
+                    //     console.log("email or password may be wrong");
+                    // }
+                    //making input field clear
+                    reset();
+            
+            
+                    // if(accessToken) {
+                    //     navigate("/home");
+                    // }
+        } catch (error) {
+            console.log(`Error while logging in the user, ${error}`);
+        }
     }
 
     useEffect(() => {

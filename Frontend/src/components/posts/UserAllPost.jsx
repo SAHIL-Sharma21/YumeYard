@@ -18,7 +18,7 @@ const UserAllPost = () => {
 
     const fetchUserAllposts = async() => {
         try {
-            const response = await axios.get('http://localhost:8080/api/v1/users/user-posts', {
+            const response = await axios.get(`${import.meta.env.VITE_BACKEND_API_URL}/users/user-posts`, {
                 headers: {
                     Authorization: `Bearer ${accessToken}`
                 }
@@ -44,7 +44,7 @@ const UserAllPost = () => {
 
         
        try {
-        const response = await axios.patch(`http://localhost:8080/api/v1/posts/update/${editMode}`, {
+        const response = await axios.patch(`${import.meta.env.VITE_BACKEND_API_URL}/posts/update/${editMode}`, {
             newTitle: data.title, //bug was here.
             newDescription: data.description
          }, {
@@ -79,7 +79,7 @@ const UserAllPost = () => {
     const handleDeletePost = async (postId) => {
         // Same delete post logic as before...
         try {
-            const response = await axios.delete(`http://localhost:8080/api/v1/posts/delete/${postId}`, {
+            const response = await axios.delete(`${import.meta.env.VITE_BACKEND_API_URL}/posts/delete/${postId}`, {
                 headers: {
                     Authorization: `Bearer ${accessToken}`
                 }

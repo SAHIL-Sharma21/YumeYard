@@ -19,19 +19,22 @@ const Register = () => {
 
     //handle create account
     const createAccount = async (data) => {
-        console.log(data);
         
-        setIsloading(true);
-        //makiong post request to create account
-        const response = await axios.post('http://localhost:8080/api/v1/users/register', data);
-        console.log(response.data);
-
-        setIsloading(false);
-        if(response.data.statusCode === 200) {
-            setAlert(true);
+        try {
+                    setIsloading(true);
+                    //makiong post request to create account
+                    const response = await axios.post(`${import.meta.env.VITE_BACKEND_API_URL}/users/register`, data);
+                    console.log(response.data);
+            
+                    setIsloading(false);
+                    if(response.data.statusCode === 200) {
+                        setAlert(true);
+                    }
+                    
+                    reset();
+        } catch (error) {
+            console.log(`Error while creating user account, ${error}`);
         }
-        
-        reset();
     }
 
 
