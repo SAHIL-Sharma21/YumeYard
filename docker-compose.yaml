@@ -1,10 +1,13 @@
-#running postgresql servic here 
+#running postgresql service here 
 
 version: '3.9'
 
 services:
 
   Backend: 
+    depends_on:
+       DB:
+         condition: service_healthy
     container_name: Backend
     image: mybackend
     build: 
@@ -13,13 +16,13 @@ services:
     ports:
       - 4000:4000
     environment:
-      - DATABASE_URL=postgresql://sahil:sahil1122@DB:5432/Yume_DB
+      - DATABASE_URL=postgresql://sahil:sahil1122@DB:5432/Yume_DB?schema=public
     env_file:
       - ./Backend/.env
 
   DB:
     container_name: Database
-    image: postgres:12
+    image: postgres:latest
     restart: always
     environment:
       POSTGRES_USER: sahil
@@ -29,6 +32,20 @@ services:
       - 5432:5432
     volumes:
       - pg_data:/var/lib/postgresql/data 
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U sahil"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+
+  adminer:
+    container_name: adminer
+    image: adminer
+    ports:
+      - 8080:8080
+
+
 
 volumes:
   pg_data: {}
