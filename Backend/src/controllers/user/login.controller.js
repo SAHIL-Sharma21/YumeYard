@@ -14,6 +14,8 @@ const userLogin = requestHandler(async (req, res) => {
     //for login we need user email and password from request body
     let { email, password } = req.body;
 
+    console.log("email", email);
+    console.log("password", password)
     //trimming the value if there are white spaces
     email = email.trim();
     password = password.trim();
@@ -35,6 +37,8 @@ const userLogin = requestHandler(async (req, res) => {
     if (!existedUser) {
         throw new ApiError(401, "Please register first and then login");
     }
+
+    console.log("existed user", existedUser);
 
     //i have to check the password which is write or not usinf bcrypt;
     const isPasswordCorrect = await bcrypt.compare(password, existedUser.password);
@@ -88,6 +92,8 @@ const userLogin = requestHandler(async (req, res) => {
     if (!updatedUser) {
         throw new ApiError(500, "User did not updated!");
     }
+
+    console.log("updated user", updatedUser)
 
     const options = {
         httpOnly: true,

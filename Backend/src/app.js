@@ -8,7 +8,12 @@ const app = express();
 
 //using express builtin middlewares.
 app.use(express.json({ limit: "10mb" }));
-app.use(cors({ origin: process.env.CORS_ORIGIN, credentials: true }));
+app.use(cors({
+    credentials: true,
+    origin: ["http://localhost:5173"],
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization']
+}));
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: true, limit: "10mb" }));
 app.use(express.static("public"));
